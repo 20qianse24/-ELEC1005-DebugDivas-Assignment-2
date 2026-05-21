@@ -33,7 +33,7 @@ Made for Volunteers and Duty Officers involved in responding to unexpected emerg
 - If no assignments are visible, this means there are no current active emergencies
 - Only duty officers can create emergencies
 - Declined assignments disappear from the user's dashboard and are not accessible again
-- # WARNING: Running the test suites will reset ALL user assignments to PENDING
+- ### WARNING: Running the test suites will reset ALL user assignments to PENDING
 
 <img width="722" height="675" alt="Screenshot 2026-05-21 at 1 02 19 PM" src="https://github.com/user-attachments/assets/9b06860e-25b4-449e-9c57-fd2be15ddfb1" />
 
