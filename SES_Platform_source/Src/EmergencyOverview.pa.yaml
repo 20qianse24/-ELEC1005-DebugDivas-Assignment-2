@@ -1,0 +1,602 @@
+# ************************************************************************************************
+# Warning: YAML source code for Canvas Apps should only be used to review changes made within Power Apps Studio and for minor edits (Preview).
+# Use the maker portal to create and edit your Power Apps.
+# 
+# The schema file for Canvas Apps is available at https://go.microsoft.com/fwlink/?linkid=2304907
+# 
+# For more information, visit https://go.microsoft.com/fwlink/?linkid=2292623
+# ************************************************************************************************
+Screens:
+  EmergencyOverview:
+    Properties:
+      OnVisible: |
+        =
+        If(
+            Timer1.Value = 0 && !startTimer,
+            "Accept Task",
+            Text(Time(0, 0, Timer1.Value/1000), "hh:mm:ss")
+        )
+    Children:
+      - Grid3:
+          Control: GroupContainer@1.5.0
+          Variant: GridLayout
+          Properties:
+            Fill: =RGBA(245, 245, 245, 1)
+            Height: =Parent.Height
+            LayoutGap: =16
+            LayoutGridColumns: =10
+            LayoutGridRows: =8
+            PaddingBottom: =20
+            PaddingLeft: =20
+            PaddingRight: =20
+            PaddingTop: =20
+            Width: =Parent.Width
+          Children:
+            - SidebarContainer3:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  BorderColor: "= RGBA(226,232,240,1)\n "
+                  BorderThickness: =1
+                  Fill: =RGBA(255, 255, 255, 1)
+                  Height: =180
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =20
+                  LayoutGridColumnEnd: =4
+                  LayoutGridColumnStart: =1
+                  LayoutGridRowEnd: =-1
+                  LayoutGridRowStart: =2
+                  PaddingLeft: =20
+                  PaddingRight: =20
+                  PaddingTop: =60
+                  RadiusBottomLeft: =8
+                  RadiusBottomRight: =8
+                  RadiusTopLeft: =8
+                  RadiusTopRight: =8
+                  Width: =260
+                  X: =40
+                  Y: =40
+                Children:
+                  - Timer1:
+                      Control: Timer@2.1.0
+                      Properties:
+                        BorderThickness: =1
+                        Duration: =100000000
+                        FontWeight: =FontWeight.Semibold
+                        Height: =44
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        OnSelect: "=If(\n    !startTimer && Timer1.Value = 0,\n    \n    // ✅ FIRST CLICK → start timer + assign user\n    Reset(Timer1);\n\n    // ✅ Set assignment to Accepted on first click\n    Patch(\n        AssignedUsers,\n        LookUp(\n            AssignedUsers,\n            UserId = currentUserID &&\n            EmergencyId = selectedEmergency.ID\n        ),\n        {\n            AUStatus: { Value: \"Accepted\" }\n        }\n    );\n\n    UpdateContext({ startTimer: true }),\n\n    \n    // ✅ SECOND CLICK → stop + save result\n    startTimer,\n    \n    With(\n        { hoursSpent: Round(Timer1.Value / 3600000, 2) },\n\n        // ✅ Update user hours\n        Patch(\n            Users,\n            LookUp(Users, ID = currentUserID),\n            {\n                HoursWorked:\n                    LookUp(Users, ID = currentUserID).HoursWorked + hoursSpent\n            }\n        );\n\n        UpdateContext(\n            {\n                startTimer: false,\n                finalHours: hoursSpent\n            }\n        )\n    )\n)"
+                        Repeat: =true
+                        Start: =startTimer
+                        Text: |
+                          =
+                          If(
+                              Timer1.Value = 0 && !startTimer && IsBlank(finalHours),
+                              "Arrive on scene",
+
+                              startTimer,
+                              Text(Time(0, 0, Timer1.Value/1000), "hh:mm:ss"),
+
+                              !IsBlank(finalHours),
+                              Text(finalHours, "0.00") & " hours recorded"
+                          )
+                        Width: =Parent.Width - 70
+                        X: =20
+                        Y: =20
+                  - Button3:
+                      Control: ModernButton@1.0.0
+                      Properties:
+                        BasePaletteColor: =RGBA(249, 83, 109, 1)
+                        BorderThickness: =1
+                        FontWeight: =FontWeight.Semibold
+                        Height: =44
+                        IconStyle: =IconStyle.Filled
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        OnSelect: |-
+                          =Patch(
+                                      AssignedUsers,
+                                      LookUp(
+                                          AssignedUsers,
+                                          UserId = currentUserID &&
+                                          EmergencyId = selectedEmergency.ID   // ✅ NUMBER = NUMBER
+                                      ),
+                                      {
+                                          AUStatus: { Value: "Declined" }   // ✅ choice field
+                                      }
+                                  );
+                          Notify("Assignment declined, returning to dashboard");
+                          Navigate(VolunteerDashboard)
+                        RadiusBottomLeft: =10
+                        RadiusBottomRight: =10
+                        RadiusTopLeft: =10
+                        RadiusTopRight: =10
+                        Size: =15
+                        Text: ="Decline Task"
+                        Width: =Parent.Width - 70
+                        X: =20
+                        Y: =20+44+12
+                  - Label2:
+                      Control: Label@2.5.1
+                      Properties:
+                        Color: =RGBA(71,85,105,1)
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        Text: |-
+                          =
+                          "Status: " &
+                          LookUp(
+                              AssignedUsers,
+                              UserId = currentUserID &&
+                              EmergencyId = selectedEmergency.ID
+                          ).AUStatus.Value
+                  - Image4:
+                      Control: Image@2.2.3
+                      Properties:
+                        Height: =150
+                        Image: =selectedEmergency.Image
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        RadiusBottomLeft: =8
+                        RadiusBottomRight: =8
+                        RadiusTopLeft: =8
+                        RadiusTopRight: =8
+                        Width: =Parent.Width - 40
+                        X: =20
+                        Y: =165
+            - MainContainer4_1:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  BorderColor: =RGBA(225, 0, 0, 1)
+                  Fill: |
+                    =RGBA(220,38,38,1)
+                  Height: =170
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =1
+                  LayoutGridColumnEnd: =11
+                  LayoutGridColumnStart: =4
+                  LayoutGridRowEnd: =4
+                  LayoutGridRowStart: =2
+                  LayoutOverflowY: =LayoutOverflow.Scroll
+                  PaddingBottom: =10
+                  PaddingLeft: =24
+                  PaddingTop: =10
+                  RadiusBottomLeft: =10
+                  RadiusBottomRight: =10
+                  RadiusTopLeft: =10
+                  RadiusTopRight: =10
+                  Width: = Parent.Width - SidebarContainer3.Width - 16
+                  X: =40
+                  Y: =40
+                Children:
+                  - Label4:
+                      Control: Label@2.5.1
+                      Properties:
+                        Color: =RGBA(255, 255, 255, 1)
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        Overflow: =Overflow.Scroll
+                        Size: =15
+                        Text: =selectedEmergency.Status.Value
+                  - Label4_1:
+                      Control: Label@2.5.1
+                      Properties:
+                        Color: =RGBA(255, 255, 255, 1)
+                        FontWeight: =FontWeight.Bold
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        Size: =32
+                        Text: =selectedEmergency.Title
+                        Width: =Parent.Width/2
+                  - Label4_2:
+                      Control: Label@2.5.1
+                      Properties:
+                        Color: =RGBA(255, 255, 255, 1)
+                        FontWeight: =FontWeight.Semibold
+                        Italic: =true
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        Size: =18
+                        Text: =selectedEmergency.Location
+                        Width: =Parent.Width/2
+                  - Button2:
+                      Control: ModernButton@1.0.0
+                      Properties:
+                        Appearance: =ButtonAppearance.Outline
+                        Color: =Color.White
+                        DisplayMode: =
+                        FontWeight: =FontWeight.Semibold
+                        Height: =30
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        OnSelect: |-
+                          =
+                          Patch(
+                              Emergencies,
+                              selectedEmergency,
+                              {
+                                  Status: { Value: "Completed" }
+                              }
+                          );
+
+                          Notify(
+                              "Emergency marked as completed",
+                              NotificationType.Success
+                          );
+                        PaddingBottom: =5
+                        PaddingTop: =5
+                        RadiusBottomLeft: =10
+                        RadiusBottomRight: =10
+                        RadiusTopLeft: =10
+                        RadiusTopRight: =10
+                        Size: =12
+                        Text: ="Mark as complete"
+                        Visible: |
+                          =LookUp(Users, ID = currentUserID).UserType.Value = "Duty Officer"
+                              && selectedEmergency.Status.Value = "Active"
+                        Width: =140
+            - MainContainer4:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  BorderColor: =RGBA(226,232,240,1)
+                  BorderThickness: =1
+                  ContentLanguage: =
+                  Fill: =RGBA(255, 255, 255, 1)
+                  Height: =260
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutGridColumnEnd: =11
+                  LayoutGridColumnStart: =4
+                  LayoutGridRowEnd: =9
+                  LayoutGridRowStart: =4
+                  LayoutOverflowY: =LayoutOverflow.Scroll
+                  PaddingBottom: =20
+                  PaddingLeft: =20
+                  PaddingRight: =20
+                  PaddingTop: =20
+                  RadiusBottomLeft: =8
+                  RadiusBottomRight: =8
+                  RadiusTopLeft: =8
+                  RadiusTopRight: =8
+                  Width: =200
+                  X: =40
+                  Y: =40
+                Children:
+                  - Container3:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        Height: =Parent.Height
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        LayoutOverflowY: =LayoutOverflow.Scroll
+                        PaddingBottom: =8
+                        PaddingLeft: =8
+                        PaddingRight: =8
+                        PaddingTop: =8
+                        Width: =Parent.Width
+                      Children:
+                        - Text3:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Font: =Font.'Lato Black'
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                              Size: =25
+                              Text: ="Task Overview"
+                              Width: =200
+                              Wrap: =false
+                        - Text4:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                              Text: ="Review this information before arriving at the emergency site"
+                              Width: =800
+                              X: =40
+                              Y: =40
+                        - Icon3:
+                            Control: ModernIcon@1.1.0
+                            Properties:
+                              Icon: ="ClockAlarm"
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                              X: =40
+                              Y: =40
+                        - Text4_1:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              FontWeight: =FontWeight.Bold
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                              Size: =16
+                              Text: ="Qualifications Needed:"
+                              Width: =Parent.Width
+                              X: =40
+                              Y: =40
+                        - RequiredQualifcations:
+                            Control: Label@2.5.1
+                            Properties:
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                              Text: |-
+                                =Concat(
+                                    Filter(
+                                        EmergencySkills,
+                                        EmergencyId = selectedEmergency.ID
+                                    ),
+                                    LookUp(
+                                        Qualifications,
+                                        ID = QualificationId
+                                    ).Title,
+                                    ", "
+                                )
+                              Width: =Parent.Width/2
+                              X: =40
+                              Y: =40
+                        - Text4_2:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              FontWeight: =FontWeight.Bold
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                              Size: =16
+                              Text: ="Assigned Team Members:"
+                              Width: =Parent.Width
+                              X: =40
+                              Y: =40
+                        - Gallery8:
+                            Control: Gallery@2.15.0
+                            Variant: BrowseLayout_Vertical_TwoTextVariant_ver5.0
+                            Properties:
+                              Height: =Parent.Height
+                              Items: |-
+                                =
+                                Filter(
+                                    AssignedUsers,
+                                    EmergencyId = selectedEmergency.ID &&
+                                    AUStatus.Value = "Accepted"
+                                )
+                              ShowScrollbar: =false
+                              Width: =300
+                              X: =20
+                              Y: =220
+                            Children:
+                              - Title12:
+                                  Control: Label@2.5.1
+                                  Properties:
+                                    BorderColor: =RGBA(0, 0, 0, 1)
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+                                    Height: =Self.Size * 1.8
+                                    OnSelect: =Select(Parent)
+                                    PaddingBottom: =0
+                                    PaddingLeft: =0
+                                    PaddingRight: =0
+                                    PaddingTop: =0
+                                    Size: =14
+                                    Text: |-
+                                      =
+                                      LookUp(Users, ID = ThisItem.UserId).FirstName & " " &
+                                      LookUp(Users, ID = ThisItem.UserId).LastName
+                                    VerticalAlign: =VerticalAlign.Top
+                                    Width: =Parent.TemplateWidth - 86
+                                    X: =16
+                                    Y: =(Parent.TemplateHeight - (Self.Size * 1.8 + Subtitle10.Size * 1.8)) / 2
+                              - Subtitle10:
+                                  Control: Label@2.5.1
+                                  Properties:
+                                    BorderColor: =RGBA(0, 0, 0, 1)
+                                    FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+                                    Height: =Self.Size * 1.8
+                                    OnSelect: =Select(Parent)
+                                    PaddingBottom: =0
+                                    PaddingLeft: =0
+                                    PaddingRight: =0
+                                    PaddingTop: =0
+                                    Size: =12
+                                    Text: =LookUp(Users, ID = ThisItem.UserId).UserType.Value
+                                    VerticalAlign: =VerticalAlign.Top
+                                    Width: =Title12.Width
+                                    X: =Title12.X
+                                    Y: =Title12.Y + Title12.Height
+                              - Separator10:
+                                  Control: Rectangle@2.3.0
+                                  Properties:
+                                    Fill: =RGBA(255, 255, 255, 1)
+                                    Height: =8
+                                    OnSelect: =Select(Parent)
+                                    Width: =Parent.TemplateWidth
+                                    Y: =Parent.TemplateHeight - Self.Height
+                              - Rectangle11:
+                                  Control: Rectangle@2.3.0
+                                  Properties:
+                                    Fill: =App.Theme.Colors.Darker30
+                                    Height: =Parent.TemplateHeight - Separator10.Height
+                                    OnSelect: =Select(Parent)
+                                    Visible: =ThisItem.IsSelected
+                                    Width: =4
+                  - Container3_1:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =8
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        LayoutOverflowY: =LayoutOverflow.Scroll
+                        PaddingBottom: =8
+                        PaddingLeft: =15
+                        PaddingRight: =8
+                        PaddingTop: =10
+                        X: =40
+                        Y: =40
+                      Children:
+                        - Label7:
+                            Control: Label@2.5.1
+                            Properties:
+                              AutoHeight: =true
+                              Height: =109
+                              Text: ="Emergency Description:" & Char(10) & selectedEmergency.Description
+                              Width: =330
+                              X: =40
+                              Y: =40
+                        - InformationButton1:
+                            Control: ModernInformationButton@1.0.0
+                            Properties:
+                              Height: =38
+                              Width: =42
+                              X: =40
+                              Y: =40
+                        - Label8:
+                            Control: Label@2.5.1
+                            Properties:
+                              AutoHeight: =true
+                              FontWeight: =FontWeight.Semibold
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                              Text: |-
+                                ="Incident Type: " & selectedEmergency.EmergencyType.Value
+                        - Label10:
+                            Control: Label@2.5.1
+                            Properties:
+                              AutoHeight: =true
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                              Text: |-
+                                ="Priority Level: " & selectedEmergency.Severity.Value
+                        - BadgeCanvas1_1:
+                            Control: Badge@0.0.24
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Center
+                              Appearance: ='BadgeCanvas.Appearance'.Tint
+                              Content: |-
+                                ="⚠️ IMPORTANT
+                                Do not proceed to site if weather conditions deteriorate or you feel unsafe. Contact Duty Manager immediately."
+                              Height: =88
+                              Shape: ='BadgeCanvas.Shape'.Square
+                              ThemeColor: ='BadgeCanvas.ThemeColor'.Warning
+                              Width: =390
+                              X: =40
+                              Y: |
+                                =50
+            - NavBar_6:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  Fill: =RGBA(15, 108, 189, 1)
+                  Height: =Parent.Height
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutGap: =15
+                  LayoutGridColumnEnd: =11
+                  LayoutGridColumnStart: =1
+                  LayoutGridRowEnd: =2
+                  LayoutGridRowStart: =1
+                  LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                  PaddingBottom: =8
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  PaddingTop: =8
+                  Width: =Parent.Width
+                  X: =32
+                  Y: =36
+                Children:
+                  - Image1_10:
+                      Control: Image@2.2.3
+                      Properties:
+                        Image: =ses
+                        OnSelect: =Navigate(VolunteerDashboard)
+                        Width: =200
+                        X: =40
+                        Y: =40
+                  - NavBarOptions_6:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        Height: =Parent.Height
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutJustifyContent: =LayoutJustifyContent.End
+                        LayoutMinHeight: =Parent.LayoutMinHeight
+                        PaddingBottom: =8
+                        PaddingLeft: =8
+                        PaddingRight: =8
+                        PaddingTop: =8
+                        Width: =Parent.Width*(3/4)
+                      Children:
+                        - Button3_7:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Height: =Parent.Height-20
+                              OnSelect: =Navigate(VolunteerDashboard)
+                              Text: ="Dashboard"
+                              Width: |
+                                =140
+                        - Button4_7:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Height: =Parent.Height-20
+                              OnSelect: =Navigate(HazardReport)
+                              Text: ="Report Hazard"
+                              Width: =140
+                              X: =40
+                              Y: =40
+                        - ButtonGroupChat_4:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Height: =Parent.Height-20
+                              OnSelect: =Navigate(GroupChat)
+                              Text: ="Group Chat"
+                              Visible: |-
+                                =
+                                !IsEmpty(
+                                    Filter(
+                                        AssignedUsers,
+                                        UserId = currentUserID &&
+                                        AUStatus.Value = "Accepted"
+                                    )
+                                )
+                              Width: |
+                                =140
+                              X: =40
+                              Y: =40
+                        - ButtonReportEmergency_6:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                              OnSelect: =Navigate(EmergencyReport)
+                              Text: ="Report Emergency"
+                              Visible: |-
+                                =
+                                LookUp(Users, ID = currentUserID).UserType.Value = "Duty Officer"
+                              Width: =150
+                        - Button6_7:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Height: |
+                                =Parent.Height-20
+                              OnSelect: |-
+                                =
+                                Set(currentUserID, Blank());
+
+                                Navigate(LoginScreen);
+
+                                Notify(
+                                    "You have been logged out.",
+                                    NotificationType.Information
+                                );
+                              Text: ="Log Out"
+                              Width: =140
+                              X: =40
+                              Y: =40

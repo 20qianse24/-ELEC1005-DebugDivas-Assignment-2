@@ -1,0 +1,166 @@
+# ************************************************************************************************
+# Warning: YAML source code for Canvas Apps should only be used to review changes made within Power Apps Studio and for minor edits (Preview).
+# Use the maker portal to create and edit your Power Apps.
+# 
+# The schema file for Canvas Apps is available at https://go.microsoft.com/fwlink/?linkid=2304907
+# 
+# For more information, visit https://go.microsoft.com/fwlink/?linkid=2292623
+# ************************************************************************************************
+Screens:
+  LoginScreen:
+    Properties:
+      OnVisible: =Set(labeltxt, false)
+    Children:
+      - LoginContainer:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =16
+            LayoutJustifyContent: =LayoutJustifyContent.Center
+            PaddingBottom: =8
+            PaddingLeft: =50
+            PaddingRight: =50
+            PaddingTop: =8
+            Width: =Parent.Width
+          Children:
+            - Image1:
+                Control: Image@2.2.3
+                Properties:
+                  Image: ='NSW_SES_Logo.svg'
+                  Width: =200
+                  X: =162
+                  Y: =36
+            - Volunteer Platform:
+                Control: ModernText@1.0.0
+                Properties:
+                  Align: =Align.Center
+                  AutoHeight: =true
+                  FontWeight: =FontWeight.Bold
+                  Height: =66
+                  Size: =40
+                  Text: ="Volunteer Platform"
+                  Width: =388
+                  X: =68
+                  Y: =97
+            - Instruction:
+                Control: ModernText@1.0.0
+                Properties:
+                  Align: =Align.Center
+                  Height: =40
+                  Size: =30
+                  Text: ="Sign in to access your dashboard"
+                  Width: =392
+                  X: =66
+                  Y: =149
+            - Text6:
+                Control: ModernText@1.0.0
+                Properties:
+                  LayoutMinHeight: =16
+                  LayoutMinWidth: =16
+                  Text: ="Email"
+            - InputEmail:
+                Control: ModernTextInput@1.1.0
+                Properties:
+                  BasePaletteColor: =RGBA(5, 102, 178, 1)
+                  Height: =48
+                  Placeholder: ="volunteer@ses.nsw.gov.au"
+                  Width: =Min(Parent.Width, 420)
+                  X: =42
+                  Y: =240
+            - Text6_1:
+                Control: ModernText@1.0.0
+                Properties:
+                  LayoutMinHeight: =16
+                  LayoutMinWidth: =16
+                  Text: ="Password"
+            - InputPassword:
+                Control: ModernTextInput@1.1.0
+                Properties:
+                  BasePaletteColor: =RGBA(5, 102, 178, 1)
+                  Height: =44
+                  Placeholder: ="Enter your password"
+                  Width: =Min(Parent.Width, 420)
+                  X: =4
+                  Y: =342
+            - Button1:
+                Control: ModernButton@1.0.0
+                Properties:
+                  Height: =36
+                  OnSelect: |-
+                    =
+                    Set(
+                        currentUserID,
+                        LookUp(
+                            Users,
+                            Email = Lower(InputEmail.Text) &&
+                            Password = InputPassword.Text,
+                            ID
+                        )
+                    );
+
+                    Set(
+                        usertypeevalue,
+                        LookUp(
+                            Users,
+                            (Email) = Lower(InputEmail.Text) &&
+                            (Password = InputPassword.Text),
+                            UserType.Value
+                        )
+                    );
+
+                    If(
+                        IsBlank(usertypeevalue),
+                        Notify("Incorrect email or password"); Set(labeltxt, true),
+                        Switch(
+                            usertypeevalue,
+                            "Volunteer",
+                                Navigate(VolunteerDashboard),
+                            "Duty Officer",
+                                Navigate(VolunteerDashboard)
+                        )
+                    );
+
+                    Reset(InputEmail);
+                    Reset(InputPassword);
+                  Text: ="Login"
+                  Width: =Min(Parent.Width, 420)
+                  X: =2
+                  Y: =435
+            - Text2_2:
+                Control: ModernText@1.0.0
+                Properties:
+                  Height: =31
+                  Text: ="Don't have an account?"
+                  Width: =187
+                  X: =131
+                  Y: =479
+            - SignInButton:
+                Control: ModernButton@1.0.0
+                Properties:
+                  Align: =Align.Left
+                  Appearance: =ButtonAppearance.Transparent
+                  Color: =RGBA(46, 63, 138, 1)
+                  Height: =23
+                  LayoutMaxWidth: =15
+                  OnSelect: =Navigate(SignUp)
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  Text: ="Sign up"
+                  VerticalAlign: =VerticalAlign.Middle
+                  Width: =20
+                  X: =281
+                  Y: =483
+            - Text5:
+                Control: ModernText@1.0.0
+                Properties:
+                  Color: =RGBA(189, 49, 51, 1)
+                  Text: ="Incorrect email or password."
+                  Visible: =labeltxt
+                  Width: =264
+                  X: =4
+                  Y: =393

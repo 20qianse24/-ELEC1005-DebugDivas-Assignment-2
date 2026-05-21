@@ -1,0 +1,76 @@
+{
+  "Resources": [
+    {
+      "Name": "SampleImage",
+      "Schema": "i",
+      "IsSampleData": true,
+      "IsWritable": false,
+      "Type": "ResourceInfo",
+      "FileName": "/ctrllib/image/images/SampleImage.svg",
+      "Path": "/ctrllib/image/images/SampleImage.svg",
+      "Content": "Image",
+      "ResourceKind": "Uri",
+      "RootPath": "ms-appx:///ctrllib/image/images/SampleImage.svg"
+    },
+    {
+      "Name": "NSW_SES_Logo.svg",
+      "Schema": "i",
+      "IsSampleData": false,
+      "IsWritable": false,
+      "Type": "ResourceInfo",
+      "FileName": "b260b618-31f8-475d-9e91-d88373b92c37.png",
+      "Path": "Assets\\Images\\b260b618-31f8-475d-9e91-d88373b92c37.png",
+      "Content": "Image",
+      "ResourceKind": "LocalFile",
+      "RootPath": "https://dsprdil102eau.blob.core.windows.net/ffb63f17-9b48-41b3-9f4b-4d212cecd4ae-1/resource/YjI2MGI2MTgtMzFmOC00NzVkLTllOTEtZDg4MzczYjkyYzM3.png?skoid=58690ece-ec83-4ce2-9ce8-883d4d6a54ee&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-05-21T11%3A54%3A35Z&ske=2026-05-22T12%3A09%3A35Z&sks=b&skv=2023-01-03&sv=2023-01-03&spr=https&se=2026-05-22T12%3A09%3A35Z&sr=b&sp=r&sig=7m6knPMa%2FZ1Qkm%2BAneMt5iFq2jVyOG4arCApFvYzDD0%3D"
+    },
+    {
+      "Name": "SampleCardImage",
+      "Schema": "i",
+      "IsSampleData": true,
+      "IsWritable": false,
+      "Type": "ResourceInfo",
+      "FileName": "/ctrllib/modernCard/images/SampleCardImage.svg",
+      "Path": "/ctrllib/modernCard/images/SampleCardImage.svg",
+      "Content": "Image",
+      "ResourceKind": "Uri",
+      "RootPath": "ms-appx:///ctrllib/modernCard/images/SampleCardImage.svg"
+    },
+    {
+      "Name": "SampleCardHeaderImage",
+      "Schema": "i",
+      "IsSampleData": true,
+      "IsWritable": false,
+      "Type": "ResourceInfo",
+      "FileName": "/ctrllib/modernCard/images/SampleCardHeaderImage.svg",
+      "Path": "/ctrllib/modernCard/images/SampleCardHeaderImage.svg",
+      "Content": "Image",
+      "ResourceKind": "Uri",
+      "RootPath": "ms-appx:///ctrllib/modernCard/images/SampleCardHeaderImage.svg"
+    },
+    {
+      "Name": "ses",
+      "Schema": "i",
+      "IsSampleData": false,
+      "IsWritable": false,
+      "Type": "ResourceInfo",
+      "FileName": "f6f73481-3d3d-4d8a-b58f-31486a42b2e6.jpg",
+      "Path": "Assets\\Images\\f6f73481-3d3d-4d8a-b58f-31486a42b2e6.jpg",
+      "Content": "Image",
+      "ResourceKind": "LocalFile",
+      "RootPath": "https://dsprdil102eau.blob.core.windows.net/ffb63f17-9b48-41b3-9f4b-4d212cecd4ae-1/resource/ZjZmNzM0ODEtM2QzZC00ZDhhLWI1OGYtMzE0ODZhNDJiMmU2.jpg?skoid=58690ece-ec83-4ce2-9ce8-883d4d6a54ee&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-05-21T11%3A54%3A35Z&ske=2026-05-22T12%3A09%3A35Z&sks=b&skv=2023-01-03&sv=2023-01-03&spr=https&se=2026-05-22T12%3A09%3A35Z&sr=b&sp=r&sig=JnMvNDp62IGUELdxrHLCWfGqP3NPVx%2BhieOqDVbtQrk%3D"
+    },
+    {
+      "Name": "Screenshot 2026-05-19 at 11.45.38 PM",
+      "Schema": "i",
+      "IsSampleData": false,
+      "IsWritable": false,
+      "Type": "ResourceInfo",
+      "FileName": "c7a34066-311f-49c3-8708-f050c0c7feba.png",
+      "Path": "Assets\\Images\\c7a34066-311f-49c3-8708-f050c0c7feba.png",
+      "Content": "Image",
+      "ResourceKind": "LocalFile",
+      "RootPath": "https://dsprdil102eau.blob.core.windows.net/ffb63f17-9b48-41b3-9f4b-4d212cecd4ae-1/resource/YzdhMzQwNjYtMzExZi00OWMzLTg3MDgtZjA1MGMwYzdmZWJh.png?skoid=58690ece-ec83-4ce2-9ce8-883d4d6a54ee&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-05-21T11%3A54%3A36Z&ske=2026-05-22T12%3A09%3A36Z&sks=b&skv=2023-01-03&sv=2023-01-03&spr=https&se=2026-05-22T12%3A09%3A36Z&sr=b&sp=r&sig=RhajFITcrDsvYI3kY9qa1vB0Fb0L%2FBW7yvF4aGHOMgY%3D"
+    }
+  ]
+}

@@ -1,0 +1,586 @@
+# ************************************************************************************************
+# Warning: YAML source code for Canvas Apps should only be used to review changes made within Power Apps Studio and for minor edits (Preview).
+# Use the maker portal to create and edit your Power Apps.
+# 
+# The schema file for Canvas Apps is available at https://go.microsoft.com/fwlink/?linkid=2304907
+# 
+# For more information, visit https://go.microsoft.com/fwlink/?linkid=2292623
+# ************************************************************************************************
+Screens:
+  SignUp:
+    Properties:
+      OnVisible: |-
+        =Set(labeltxt, false);
+        NewForm(SignUpForm);
+    Children:
+      - SignUpContainer:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =16
+            LayoutJustifyContent: =LayoutJustifyContent.Center
+            PaddingBottom: =30
+            PaddingLeft: =50
+            PaddingRight: =50
+            PaddingTop: =50
+            Width: =Parent.Width
+          Children:
+            - Image1_2:
+                Control: Image@2.2.3
+                Properties:
+                  Image: ='NSW_SES_Logo.svg'
+                  Width: =200
+                  X: =156
+                  Y: =36
+            - Create Account:
+                Control: ModernText@1.0.0
+                Properties:
+                  Align: =Align.Center
+                  AutoHeight: =true
+                  FontWeight: =FontWeight.Bold
+                  Height: =66
+                  Size: =30
+                  Text: ="Create Your Account"
+                  Width: =388
+                  X: =62
+                  Y: =97
+            - Instruction_2:
+                Control: ModernText@1.0.0
+                Properties:
+                  Align: =Align.Center
+                  Height: =40
+                  Size: =20
+                  Text: ="Join the Volunteer Network"
+                  Width: =392
+                  X: =60
+                  Y: =149
+            - SignUpForm:
+                Control: Form@2.4.4
+                Layout: Vertical
+                Properties:
+                  DataSource: =Users
+                  DefaultMode: =FormMode.New
+                  Height: =Parent.Height
+                  LayoutMinHeight: =
+                  OnSuccess: |
+                    =
+                    ForAll(
+                        selectedSkills As q,
+                        Patch(
+                            UserQualifications,
+                            Defaults(UserQualifications),
+                            {
+                                UserId: SignUpForm.LastSubmit.ID,
+                                QualificationId:
+                                    LookUp(
+                                        Qualifications,
+                                        Title = q.Title
+                                    ).ID
+                            }
+                        )
+                    );
+
+                    Notify("Sign up successful, please login.", NotificationType.Success);
+
+                    ResetForm(SignUpForm);
+                    Navigate(LoginScreen);
+                  Width: =1280
+                  X: =40
+                  Y: =2
+                Children:
+                  - FirstName_DataCard2:
+                      Control: TypedDataCard@1.0.7
+                      Variant: TextualEdit
+                      Properties:
+                        DataField: ="Name"
+                        Default: =ThisItem.FirstName
+                        DisplayName: =DataSourceInfo([@Users],DataSourceInfo.DisplayName,FirstName)
+                        MaxLength: =DataSourceInfo([@Users], DataSourceInfo.MaxLength, FirstName)
+                        Required: =false
+                        Update: =NewFName.Value
+                        Width: =Parent.Width/3
+                        X: =0
+                        Y: =0
+                      Children:
+                        - DataCardKey30:
+                            Control: Text@0.0.51
+                            MetadataKey: FieldName
+                            Properties:
+                              Height: =22
+                              Text: ="First Name"
+                              Weight: ='TextCanvas.Weight'.Semibold
+                              Width: =Parent.Width - 48
+                              Wrap: =false
+                              X: =24
+                              Y: =10
+                        - NewFName:
+                            Control: TextInput@0.0.54
+                            MetadataKey: FieldValue
+                            Properties:
+                              AccessibleLabel: =Parent.DisplayName
+                              DisplayMode: =Parent.DisplayMode
+                              Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
+                              Placeholder: ="First Name"
+                              Required: =Parent.Required
+                              ValidationState: =If(IsBlank(Parent.Error), "None", "Error")
+                              Value: =Parent.Default
+                              Width: =Parent.Width - 48
+                              X: =24
+                              Y: =DataCardKey30.Y + DataCardKey30.Height + 4
+                        - ErrorMessage29:
+                            Control: Text@0.0.51
+                            MetadataKey: ErrorMessage
+                            Properties:
+                              Height: =30
+                              Text: =Parent.Error
+                              Visible: =And(!IsBlank(Parent.Error), Parent.DisplayMode=DisplayMode.Edit)
+                              Width: =Parent.Width - 48
+                              X: =24
+                              Y: =NewFName.Y + NewFName.Height
+                        - StarVisible29:
+                            Control: Text@0.0.51
+                            MetadataKey: FieldRequired
+                            Properties:
+                              Align: ='TextCanvas.Align'.Center
+                              Height: =30
+                              Text: ="*"
+                              Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                              Width: =30
+                              Y: =DataCardKey30.Y
+                  - LastName_DataCard2:
+                      Control: TypedDataCard@1.0.7
+                      Variant: TextualEdit
+                      Properties:
+                        DataField: ="LastName"
+                        Default: =ThisItem.LastName
+                        DisplayName: =DataSourceInfo([@Users],DataSourceInfo.DisplayName,LastName)
+                        Height: |
+                          =70
+                        MaxLength: =DataSourceInfo([@Users], DataSourceInfo.MaxLength, LastName)
+                        Required: =false
+                        Update: =NewLName.Value
+                        Width: =Parent.Width/3
+                        X: =1
+                        Y: =0
+                      Children:
+                        - DataCardKey31:
+                            Control: Text@0.0.51
+                            MetadataKey: FieldName
+                            Properties:
+                              Height: =22
+                              Text: ="Last Name"
+                              Weight: ='TextCanvas.Weight'.Semibold
+                              Width: =Parent.Width - 48
+                              Wrap: =false
+                              X: =24
+                              Y: =10
+                        - NewLName:
+                            Control: TextInput@0.0.54
+                            MetadataKey: FieldValue
+                            Properties:
+                              AccessibleLabel: =Parent.DisplayName
+                              DisplayMode: =Parent.DisplayMode
+                              Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
+                              Placeholder: ="Last Name"
+                              Required: =Parent.Required
+                              ValidationState: =If(IsBlank(Parent.Error), "None", "Error")
+                              Value: =Parent.Default
+                              Width: =Parent.Width - 48
+                              X: =24
+                              Y: =DataCardKey31.Y + DataCardKey31.Height + 4
+                        - ErrorMessage30:
+                            Control: Text@0.0.51
+                            MetadataKey: ErrorMessage
+                            Properties:
+                              Height: =30
+                              Text: =Parent.Error
+                              Visible: =And(!IsBlank(Parent.Error), Parent.DisplayMode=DisplayMode.Edit)
+                              Width: =Parent.Width - 48
+                              X: =24
+                              Y: =NewLName.Y + NewLName.Height
+                        - StarVisible30:
+                            Control: Text@0.0.51
+                            MetadataKey: FieldRequired
+                            Properties:
+                              Align: ='TextCanvas.Align'.Center
+                              Height: =30
+                              Text: ="*"
+                              Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                              Width: =30
+                              Y: =DataCardKey31.Y
+                  - UserType_DataCard2:
+                      Control: TypedDataCard@1.0.7
+                      Variant: ComboBoxEdit
+                      Properties:
+                        DataField: ="UserType"
+                        Default: =ThisItem.UserType
+                        DisplayName: =DataSourceInfo([@Users],DataSourceInfo.DisplayName,UserType)
+                        Height: =Parent.Height/3
+                        Required: =false
+                        Update: =NewUserType.Selected
+                        Width: =Parent.Width/3
+                        X: =2
+                        Y: =0
+                      Children:
+                        - DataCardKey33:
+                            Control: Text@0.0.51
+                            MetadataKey: FieldName
+                            Properties:
+                              Height: =22
+                              Text: ="Account Type"
+                              Weight: ='TextCanvas.Weight'.Semibold
+                              Width: =Parent.Width - 48
+                              Wrap: =false
+                              X: =24
+                              Y: =10
+                        - NewUserType:
+                            Control: ComboBox@0.0.51
+                            MetadataKey: FieldValue
+                            Properties:
+                              AccessibleLabel: =Parent.DisplayName
+                              DefaultSelectedItems: =[Parent.Default]
+                              DisplayMode: =Parent.DisplayMode
+                              Items: =Choices([@Users].UserType)
+                              Required: =Parent.Required
+                              ValidationState: =If(IsBlank(Parent.Error), "None", "Error")
+                              Width: =Parent.Width - 48
+                              X: =24
+                              Y: =DataCardKey33.Y + DataCardKey33.Height + 4
+                        - ErrorMessage32:
+                            Control: Text@0.0.51
+                            MetadataKey: ErrorMessage
+                            Properties:
+                              Height: =30
+                              Text: =Parent.Error
+                              Visible: =And(!IsBlank(Parent.Error), Parent.DisplayMode=DisplayMode.Edit)
+                              Width: =Parent.Width - 48
+                              X: =24
+                              Y: =NewUserType.Y + NewUserType.Height
+                        - StarVisible32:
+                            Control: Text@0.0.51
+                            MetadataKey: FieldRequired
+                            Properties:
+                              Align: ='TextCanvas.Align'.Center
+                              Height: =20
+                              Text: ="*"
+                              Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                              Width: =30
+                              Y: =DataCardKey33.Y
+                  - Email_DataCard2:
+                      Control: TypedDataCard@1.0.7
+                      Variant: TextualEdit
+                      IsLocked: true
+                      Properties:
+                        DataField: ="email"
+                        Default: =ThisItem.Email
+                        DisplayName: =DataSourceInfo([@Users],DataSourceInfo.DisplayName,Email)
+                        MaxLength: =DataSourceInfo([@Users], DataSourceInfo.MaxLength, Email)
+                        Required: =false
+                        Update: =NewEmail.Value
+                        Width: =Parent.Width/3
+                        X: =0
+                        Y: =1
+                      Children:
+                        - DataCardKey29:
+                            Control: Text@0.0.51
+                            MetadataKey: FieldName
+                            Properties:
+                              Height: =22
+                              Text: =Parent.DisplayName
+                              Weight: ='TextCanvas.Weight'.Semibold
+                              Width: =Parent.Width - 48
+                              Wrap: =false
+                              X: =24
+                              Y: =10
+                        - NewEmail:
+                            Control: TextInput@0.0.54
+                            MetadataKey: FieldValue
+                            Properties:
+                              AccessibleLabel: =Parent.DisplayName
+                              DisplayMode: =Parent.DisplayMode
+                              Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
+                              Placeholder: ="volunteer@ses.nsw.gov.au"
+                              Required: =Parent.Required
+                              Type: ='TextInputCanvas.Type'.Text
+                              ValidationState: =If(IsBlank(Parent.Error), "None", "Error")
+                              Value: =Parent.Default
+                              Width: =Parent.Width - 48
+                              X: =24
+                              Y: =DataCardKey29.Y + DataCardKey29.Height + 4
+                        - ErrorMessage28:
+                            Control: Text@0.0.51
+                            MetadataKey: ErrorMessage
+                            Properties:
+                              Height: =30
+                              Text: =Parent.Error
+                              Visible: =And(!IsBlank(Parent.Error), Parent.DisplayMode=DisplayMode.Edit)
+                              Width: =Parent.Width - 48
+                              X: =24
+                              Y: =NewEmail.Y + NewEmail.Height
+                        - StarVisible28:
+                            Control: Text@0.0.51
+                            MetadataKey: FieldRequired
+                            Properties:
+                              Align: ='TextCanvas.Align'.Center
+                              Height: =30
+                              Text: ="*"
+                              Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                              Width: =30
+                              Y: =DataCardKey29.Y
+                  - SkillsCard:
+                      Control: TypedDataCard@1.0.7
+                      Variant: BlankCard
+                      Properties:
+                        DataField: ="Qualifications"
+                        DisplayMode: =Parent.DisplayMode
+                        Height: |
+                          =70
+                        Width: =Parent.Width/3
+                        X: =1
+                        Y: =1
+                      Children:
+                        - cmbSkills:
+                            Control: ModernCombobox@1.1.0
+                            Properties:
+                              AccessibleLabel: ="[""Qualification""]"
+                              InputTextPlaceholder: ="Select Qualifications"
+                              ItemDisplayText: =ThisItem.'Title'
+                              Items: =ShowColumns(Qualifications, ID, Title)
+                              Width: =Parent.Width - 48
+                              X: =40
+                              Y: =40
+                        - DataCardKey33_1:
+                            Control: Text@0.0.51
+                            Properties:
+                              Height: =22
+                              Text: ="Qualifications"
+                              Weight: ='TextCanvas.Weight'.Semibold
+                              Width: =Parent.Width - 48
+                              Wrap: =false
+                              X: =24
+                              Y: =10
+                  - Password_DataCard2:
+                      Control: TypedDataCard@1.0.7
+                      Variant: TextualEdit
+                      Properties:
+                        DataField: ="Password"
+                        Default: =ThisItem.Password
+                        DisplayName: =DataSourceInfo([@Users],DataSourceInfo.DisplayName,Password)
+                        MaxLength: =DataSourceInfo([@Users], DataSourceInfo.MaxLength, Password)
+                        Required: =false
+                        Update: =NewPassword.Value
+                        Width: =Parent.Width/3
+                        X: =2
+                        Y: =1
+                      Children:
+                        - DataCardKey32:
+                            Control: Text@0.0.51
+                            MetadataKey: FieldName
+                            Properties:
+                              Height: =22
+                              Text: ="Create Password"
+                              Weight: ='TextCanvas.Weight'.Semibold
+                              Width: =Parent.Width - 48
+                              Wrap: =false
+                              X: =24
+                              Y: =10
+                        - NewPassword:
+                            Control: TextInput@0.0.54
+                            MetadataKey: FieldValue
+                            Properties:
+                              AccessibleLabel: =Parent.DisplayName
+                              DisplayMode: =Parent.DisplayMode
+                              Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
+                              Placeholder: ="Enter your password"
+                              Required: =Parent.Required
+                              ValidationState: =If(IsBlank(Parent.Error), "None", "Error")
+                              Value: =Parent.Default
+                              Width: =Parent.Width - 48
+                              X: =24
+                              Y: =DataCardKey32.Y + DataCardKey32.Height + 4
+                        - ErrorMessage31:
+                            Control: Text@0.0.51
+                            MetadataKey: ErrorMessage
+                            Properties:
+                              Height: =30
+                              Text: =Parent.Error
+                              Visible: =And(!IsBlank(Parent.Error), Parent.DisplayMode=DisplayMode.Edit)
+                              Width: =Parent.Width - 48
+                              X: =24
+                              Y: =NewPassword.Y + NewPassword.Height
+                        - StarVisible31:
+                            Control: Text@0.0.51
+                            MetadataKey: FieldRequired
+                            Properties:
+                              Align: ='TextCanvas.Align'.Center
+                              Height: =30
+                              Text: ="*"
+                              Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                              Width: =30
+                              Y: =DataCardKey32.Y
+                  - ProfilePhoto_DataCard1:
+                      Control: TypedDataCard@1.0.7
+                      Variant: LargePicture
+                      Properties:
+                        DataField: ="ProfilePhoto"
+                        Default: =ThisItem.ProfilePhoto
+                        DisplayName: =DataSourceInfo([@Users],DataSourceInfo.DisplayName,ProfilePhoto)
+                        Required: =false
+                        Update: =Image6.Image
+                        Width: =422
+                        X: =0
+                        Y: =2
+                      Children:
+                        - DataCardKey19:
+                            Control: Text@0.0.51
+                            MetadataKey: FieldName
+                            Properties:
+                              Height: =34
+                              Text: |
+                                ="Profile Photo"
+                              Weight: ='TextCanvas.Weight'.Semibold
+                              Width: =Parent.Width - 60
+                              Wrap: =false
+                              X: =30
+                              Y: =10
+                        - Image6:
+                            Control: Image@2.2.3
+                            MetadataKey: FieldValue
+                            Properties:
+                              BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                              DisplayMode: =Parent.DisplayMode
+                              Height: =AddPicture3.Height
+                              Image: =If(IsBlank(AddPicture3.Media), Parent.Default, AddPicture3.Media)
+                              Tooltip: =Parent.DisplayName
+                              Width: =AddPicture3.Width
+                              X: =AddPicture3.X
+                              Y: =AddPicture3.Y
+                        - AddPicture3:
+                            Control: AddMedia@2.2.1
+                            MetadataKey: AddPicture
+                            Properties:
+                              Height: =200
+                              Width: =Parent.Width - 60
+                              X: =30
+                              Y: =DataCardKey19.Y + DataCardKey19.Height + 5
+                        - ErrorMessage19:
+                            Control: Text@0.0.51
+                            MetadataKey: ErrorMessage
+                            Properties:
+                              Height: =10
+                              Size: =12
+                              Text: =Parent.Error
+                              Visible: =Parent.DisplayMode=DisplayMode.Edit
+                              Width: =Parent.Width - 60
+                              X: =30
+                              Y: =Image6.Y + Image6.Height
+                        - StarVisible19:
+                            Control: Text@0.0.51
+                            MetadataKey: FieldRequired
+                            Properties:
+                              Align: ='TextCanvas.Align'.Center
+                              Height: =DataCardKey19.Height
+                              Text: ="*"
+                              Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                              Width: =30
+                              Wrap: =false
+                              Y: =DataCardKey19.Y
+                  - Location_DataCard2:
+                      Control: TypedDataCard@1.0.7
+                      Variant: TextualEdit
+                      Properties:
+                        DataField: ="Location0"
+                        Default: =ThisItem.Location
+                        DisplayName: =DataSourceInfo([@Users],DataSourceInfo.DisplayName,'Location0')
+                        MaxLength: =DataSourceInfo([@Users], DataSourceInfo.MaxLength, 'Location0')
+                        Required: =false
+                        Update: =DataCardValue8.Value
+                        Width: =422
+                        X: =1
+                        Y: =2
+                      Children:
+                        - DataCardKey10:
+                            Control: Text@0.0.51
+                            MetadataKey: FieldName
+                            Properties:
+                              Height: =22
+                              Text: ="Address"
+                              Weight: ='TextCanvas.Weight'.Semibold
+                              Width: =Parent.Width - 48
+                              Wrap: =false
+                              X: =24
+                              Y: =10
+                        - DataCardValue8:
+                            Control: TextInput@0.0.54
+                            MetadataKey: FieldValue
+                            Properties:
+                              AccessibleLabel: =Parent.DisplayName
+                              DisplayMode: =Parent.DisplayMode
+                              Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
+                              Placeholder: ="Enter Address (for defualt location)"
+                              Required: =Parent.Required
+                              ValidationState: =If(IsBlank(Parent.Error), "None", "Error")
+                              Value: =Parent.Default
+                              Width: =Parent.Width - 48
+                              X: =24
+                              Y: =DataCardKey10.Y + DataCardKey10.Height + 4
+                        - ErrorMessage11:
+                            Control: Text@0.0.51
+                            MetadataKey: ErrorMessage
+                            Properties:
+                              Height: =30
+                              Text: =Parent.Error
+                              Visible: =And(!IsBlank(Parent.Error), Parent.DisplayMode=DisplayMode.Edit)
+                              Width: =Parent.Width - 48
+                              X: =24
+                              Y: =DataCardValue8.Y + DataCardValue8.Height
+                        - StarVisible11:
+                            Control: Text@0.0.51
+                            MetadataKey: FieldRequired
+                            Properties:
+                              Align: ='TextCanvas.Align'.Center
+                              Height: =30
+                              Text: ="*"
+                              Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                              Width: =30
+                              Y: =DataCardKey10.Y
+            - Button1_2:
+                Control: ModernButton@1.0.0
+                Properties:
+                  BasePaletteColor: =RGBA(5, 102, 178, 1)
+                  Height: =35
+                  IconStyle: =IconStyle.Filled
+                  OnSelect: "=If(\n    !SignUpForm.Valid,\n    Notify(\"Please complete all required fields.\", NotificationType.Error),\n\n    If(\n        !IsMatch(\n            SignUpForm.Updates.Email,\n            \"^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$\"\n        ),\n\n        Notify(\"Please enter a valid email address.\", NotificationType.Error),\n\n        \n            // ✅ VERY IMPORTANT: capture selected skills BEFORE submit\n            Set(\n                selectedSkills,\n                cmbSkills.SelectedItems\n            );\n\n            SubmitForm(SignUpForm)\n        )\n    )"
+                  Text: ="Create Account"
+                  Width: =388
+                  X: =64
+                  Y: =517
+            - Text2_1:
+                Control: ModernText@1.0.0
+                Properties:
+                  Height: =31
+                  Text: ="Already have an acccount?"
+                  Width: =187
+                  X: =134
+                  Y: =563
+            - SignInButton_1:
+                Control: ModernButton@1.0.0
+                Properties:
+                  Align: =Align.Left
+                  Appearance: =ButtonAppearance.Transparent
+                  Color: =RGBA(15, 84, 140, 1)
+                  Height: =23
+                  LayoutMaxWidth: =15
+                  OnSelect: =Navigate(LoginScreen)
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  Text: ="Sign in"
+                  VerticalAlign: =VerticalAlign.Middle
+                  Width: =76
+                  X: =301
+                  Y: =567

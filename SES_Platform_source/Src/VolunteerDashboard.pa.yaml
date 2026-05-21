@@ -1,0 +1,743 @@
+# ************************************************************************************************
+# Warning: YAML source code for Canvas Apps should only be used to review changes made within Power Apps Studio and for minor edits (Preview).
+# Use the maker portal to create and edit your Power Apps.
+# 
+# The schema file for Canvas Apps is available at https://go.microsoft.com/fwlink/?linkid=2304907
+# 
+# For more information, visit https://go.microsoft.com/fwlink/?linkid=2292623
+# ************************************************************************************************
+Screens:
+  VolunteerDashboard:
+    Children:
+      - ScreenContainer1:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            Fill: =RGBA(245, 245, 245, 1)
+            Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =16
+            Width: =Parent.Width
+          Children:
+            - HeaderContainer4:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  Fill: =RGBA(255, 255, 255, 1)
+                  FillPortions: =0
+                  Height: =75
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutMinHeight: =16
+                  LayoutMinWidth: =16
+                  RadiusBottomLeft: =8
+                  RadiusBottomRight: =8
+                  RadiusTopLeft: =8
+                  RadiusTopRight: =8
+                Children:
+                  - NavBar:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        Fill: =RGBA(15, 108, 189, 1)
+                        Height: =Parent.Height
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =15
+                        LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                        LayoutMinHeight: =Parent.LayoutMinHeight
+                        PaddingBottom: =8
+                        PaddingLeft: =8
+                        PaddingRight: =8
+                        PaddingTop: =8
+                        Width: =Parent.Width
+                        X: =32
+                        Y: =36
+                      Children:
+                        - Image1_4:
+                            Control: Image@2.2.3
+                            Properties:
+                              Image: =ses
+                              OnSelect: =Navigate(VolunteerDashboard)
+                              Width: =200
+                              X: =40
+                              Y: =40
+                        - NavBarOptions:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              Height: =Parent.Height
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutJustifyContent: =LayoutJustifyContent.End
+                              LayoutMinHeight: =Parent.LayoutMinHeight
+                              PaddingBottom: =8
+                              PaddingLeft: =8
+                              PaddingRight: =8
+                              PaddingTop: =8
+                              Width: =Parent.Width*(3/4)
+                            Children:
+                              - Button3_3:
+                                  Control: ModernButton@1.0.0
+                                  Properties:
+                                    Height: =Parent.Height-20
+                                    OnSelect: =Navigate(VolunteerDashboard)
+                                    Text: ="Dashboard"
+                                    Width: |
+                                      =140
+                              - Button4_2:
+                                  Control: ModernButton@1.0.0
+                                  Properties:
+                                    Height: =Parent.Height-20
+                                    OnSelect: =Navigate(HazardReport)
+                                    Text: ="Report Hazard"
+                                    Width: =140
+                                    X: =40
+                                    Y: =40
+                              - ButtonGroupChat_3:
+                                  Control: ModernButton@1.0.0
+                                  Properties:
+                                    Height: =Parent.Height-20
+                                    OnSelect: =Navigate(GroupChat)
+                                    Text: ="Group Chat"
+                                    Visible: |-
+                                      =
+                                      !IsEmpty(
+                                          Filter(
+                                              AssignedUsers,
+                                              UserId = currentUserID &&
+                                              AUStatus.Value = "Accepted"
+                                          )
+                                      )
+                                    Width: |
+                                      =140
+                                    X: =40
+                                    Y: =40
+                              - ButtonReportEmergency_2:
+                                  Control: ModernButton@1.0.0
+                                  Properties:
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                    OnSelect: =Navigate(EmergencyReport)
+                                    Text: ="Report Emergency"
+                                    Visible: |-
+                                      =
+                                      LookUp(Users, ID = currentUserID).UserType.Value = "Duty Officer"
+                                    Width: =150
+                              - Button6_2:
+                                  Control: ModernButton@1.0.0
+                                  Properties:
+                                    Height: |
+                                      =Parent.Height-20
+                                    OnSelect: |-
+                                      =
+                                      Set(currentUserID, Blank());
+
+                                      Navigate(LoginScreen);
+
+                                      Notify(
+                                          "You have been logged out.",
+                                          NotificationType.Information
+                                      );
+                                    Text: ="Log Out"
+                                    Width: =140
+                                    X: =40
+                                    Y: =40
+            - MainContainer5:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  Fill: =RGBA(255, 255, 255, 1)
+                  LayoutAlignItems: =LayoutAlignItems.Stretch
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =10
+                  LayoutMinHeight: =16
+                  LayoutMinWidth: =16
+                  PaddingBottom: =8
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  PaddingTop: =8
+                  RadiusBottomLeft: =8
+                  RadiusBottomRight: =8
+                  RadiusTopLeft: =8
+                  RadiusTopRight: =8
+                  Y: =40
+                Children:
+                  - VolunteerProfile:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.SetByContainer
+                        Fill: =RGBA(15, 108, 189, 1)
+                        Height: =100
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =12
+                        LayoutJustifyContent: =LayoutJustifyContent.Center
+                        LayoutMaxHeight: =Parent.LayoutMaxHeight/3
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        PaddingBottom: =12
+                        PaddingLeft: =20
+                        PaddingRight: =20
+                        PaddingTop: =12
+                        Width: =Parent.Width
+                        X: =40
+                        Y: =40
+                      Children:
+                        - ProfileLeftContainer:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =8
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                              PaddingBottom: =8
+                              PaddingLeft: =8
+                              PaddingRight: =8
+                              PaddingTop: =8
+                              Width: =300
+                              X: =40
+                              Y: =40
+                            Children:
+                              - ProfileLeft:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    LayoutAlignItems: =LayoutAlignItems.Center
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutGap: =8
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                    PaddingBottom: =8
+                                    PaddingLeft: =8
+                                    PaddingRight: =8
+                                    PaddingTop: =8
+                                    Width: =300
+                                    X: =40
+                                    Y: =40
+                                  Children:
+                                    - ProfileImg_1:
+                                        Control: Image@2.2.3
+                                        Properties:
+                                          BorderColor: =Color.White
+                                          BorderThickness: =1
+                                          Height: =90
+                                          Image: |-
+                                            =If(
+                                                !IsBlank(LookUp(Users, ID = currentUserID).ProfilePhoto),
+                                                LookUp(Users, ID = currentUserID).ProfilePhoto,
+                                                SampleImage
+                                            )
+                                          RadiusBottomLeft: =50
+                                          RadiusBottomRight: =50
+                                          RadiusTopLeft: =50
+                                          RadiusTopRight: =50
+                                          Width: =90
+                                          X: =40
+                                          Y: =40
+                                    - Name_1:
+                                        Control: GroupContainer@1.5.0
+                                        Variant: AutoLayout
+                                        Properties:
+                                          DropShadow: =DropShadow.None
+                                          Height: =100
+                                          LayoutDirection: =LayoutDirection.Vertical
+                                          LayoutJustifyContent: =LayoutJustifyContent.Center
+                                          PaddingBottom: =8
+                                          PaddingLeft: =8
+                                          PaddingRight: =8
+                                          PaddingTop: =8
+                                          Width: =100
+                                          X: =40
+                                          Y: =40
+                                        Children:
+                                          - Label1_2:
+                                              Control: Label@2.5.1
+                                              Properties:
+                                                Color: =Color.White
+                                                FontWeight: =FontWeight.Bold
+                                                Size: =25
+                                                Text: =LookUp(Users, ID = currentUserID).FirstName
+                                                Width: =Parent.Width
+                                          - Label1_3:
+                                              Control: Label@2.5.1
+                                              Properties:
+                                                Color: =Color.White
+                                                FontWeight: =FontWeight.Bold
+                                                Size: =25
+                                                Text: =LookUp(Users, ID = currentUserID).LastName
+                                                Width: =Parent.Width
+                              - VolunteerSkills:
+                                  Control: Gallery@2.15.0
+                                  Variant: BrowseLayout_Horizontal_TwoTextOneImageVariant_ver5.0
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Start
+                                    Height: =100
+                                    Items: |-
+                                      =Filter(
+                                          UserQualifications,
+                                          UserId = currentUserID
+                                      )
+                                    LayoutMaxHeight: =110
+                                    LayoutMinHeight: =50
+                                    LayoutMinWidth: =48
+                                    ShowScrollbar: =false
+                                    TemplatePadding: =8
+                                    TemplateSize: =Min(440, Self.Height-10)
+                                    Width: =Parent.Width
+                                    WrapCount: =0
+                                    X: =40
+                                    Y: =40
+                                  Children:
+                                    - Label6:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          Color: =RGBA(15, 108, 189, 1)
+                                          Fill: =Color.White
+                                          OnSelect: =Select(Parent)
+                                          Text: |-
+                                            =
+                                            LookUp(
+                                                Qualifications,
+                                                ID = ThisItem.QualificationId
+                                            ).Title
+                                          Width: =100
+                                          Y: =40
+                        - ProfileRight:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              AlignInContainer: =AlignInContainer.End
+                              DropShadow: =DropShadow.None
+                              Height: =Parent.Height
+                              LayoutAlignItems: =LayoutAlignItems.End
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutJustifyContent: =LayoutJustifyContent.End
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                              PaddingBottom: =8
+                              PaddingLeft: =8
+                              PaddingRight: =8
+                              PaddingTop: =8
+                              Width: =100
+                              X: =40
+                              Y: =40
+                            Children:
+                              - Container1:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.End
+                                    DropShadow: =DropShadow.None
+                                    LayoutAlignItems: =LayoutAlignItems.Center
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                    PaddingBottom: =8
+                                    PaddingLeft: =8
+                                    PaddingRight: =8
+                                    PaddingTop: =8
+                                  Children:
+                                    - Text2:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Align: =Align.Right
+                                          Color: =RGBA(255, 255, 255, 1)
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =Parent.Height/3
+                                          LayoutMinHeight: =16
+                                          LayoutMinWidth: =16
+                                          Size: =30
+                                          Text: ="Hours Logged:"
+                                          Width: =Parent.Width
+                                    - Label1:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          Align: =Align.Right
+                                          AlignInContainer: =AlignInContainer.End
+                                          Color: =Color.White
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =Parent.Height/3
+                                          LayoutMinHeight: =16
+                                          LayoutMinWidth: =16
+                                          Size: =30
+                                          Text: =Round(LookUp(Users, ID = currentUserID).HoursWorked, 1)
+                              - ProfileEmail:
+                                  Control: Label@2.5.1
+                                  Properties:
+                                    Align: =Align.Right
+                                    Color: =Color.White
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                    Text: =LookUp(Users, ID = currentUserID).Email
+                                    Width: =Parent.Width
+                  - Container6:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.SetByContainer
+                        DropShadow: =DropShadow.None
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        PaddingBottom: =8
+                        PaddingLeft: =8
+                        PaddingRight: =8
+                        PaddingTop: =8
+                      Children:
+                        - UpcomingAssignments:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                              LayoutOverflowY: =LayoutOverflow.Scroll
+                              PaddingBottom: =8
+                              PaddingLeft: =8
+                              PaddingRight: =8
+                              PaddingTop: =8
+                              X: =40
+                              Y: =40
+                            Children:
+                              - Text1_1:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    FontWeight: =FontWeight.Bold
+                                    Height: =60
+                                    Size: =30
+                                    Text: ="Upcoming Assignments"
+                                    Width: =Parent.Width
+                                    X: =40
+                                    Y: =40
+                              - Label3:
+                                  Control: Label@2.5.1
+                                  Properties:
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                    Text: ="No upcoming assignments"
+                                    Visible: |-
+                                      =
+                                      IsEmpty(
+                                          Filter(
+                                              AssignedUsers,
+                                              UserId = currentUserID
+                                          )
+                                      )
+                                    X: =40
+                                    Y: =40
+                              - Gallery1:
+                                  Control: Gallery@2.15.0
+                                  Variant: BrowseLayout_Vertical_ThreeTextOneImageVariant_ver5.0
+                                  Properties:
+                                    Height: =Parent.Height
+                                    Items: |-
+                                      =With(
+                                          {
+                                              userEmergencyIds:
+                                                  Filter(
+                                                      AssignedUsers,
+                                                      UserId = currentUserID &&
+                                                      AUStatus.Value in ["Accepted", "Pending"]
+                                                  ).EmergencyId
+                                          },
+
+                                          Filter(
+                                              Emergencies,
+
+                                              ID in userEmergencyIds &&
+
+                                              With(
+                                                  { currentEID: ID },
+
+                                                  CountRows(
+                                                      Filter(
+                                                          EmergencySkills,
+                                                          Value(EmergencyId) = Value(currentEID) &&
+                                                          !IsBlank(
+                                                              LookUp(
+                                                                  UserQualifications,
+                                                                  UserId = currentUserID &&
+                                                                  Value(QualificationId) = Value(EmergencySkills[@QualificationId])
+                                                              )
+                                                          )
+                                                      )
+                                                  ) > 0
+                                              )
+                                          )
+                                      )
+                                  Children:
+                                    - Image8:
+                                        Control: Image@2.2.3
+                                        Properties:
+                                          Height: =84
+                                          Image: |-
+                                            =If(
+                                                !IsBlank(ThisItem.Image),
+                                                ThisItem.Image,
+                                                SampleImage
+                                            )
+                                          OnSelect: =Select(Parent)
+                                          RadiusBottomLeft: =8
+                                          RadiusBottomRight: =8
+                                          RadiusTopLeft: =8
+                                          RadiusTopRight: =8
+                                          Width: =84
+                                          X: =16
+                                          Y: =(Parent.TemplateHeight / 2) - (Self.Height / 2)
+                                    - Title5:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0, 0, 0, 1)
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          FontWeight: =If(ThisItem.IsSelected, FontWeight.Bold, FontWeight.Bold)
+                                          Height: =Self.Size * 1.8
+                                          OnSelect: =Select(Parent)
+                                          PaddingBottom: =0
+                                          PaddingLeft: =0
+                                          PaddingRight: =0
+                                          PaddingTop: =0
+                                          Size: =16
+                                          Text: =ThisItem.Title
+                                          VerticalAlign: =VerticalAlign.Top
+                                          Width: =Parent.TemplateWidth - 185
+                                          X: =115
+                                          Y: =(Parent.TemplateHeight - (Self.Size*1.8 + Subtitle3.Size*1.8 + 2 + Body2.Size*1.8)) / 2
+                                    - Subtitle3:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0, 0, 0, 1)
+                                          Fill: |
+                                            =
+                                            If(
+                                                ThisItem.Status.Value = "Completed",
+                                                RGBA(40, 167, 69, 1),          // soft green
+                                                Switch(
+                                                    ThisItem.Severity.Value,
+                                                    "High",   RGBA(236, 100, 75, 1),   // soft red
+                                                    "Medium", RGBA(255, 159, 64, 1),   // soft orange
+                                                    "Low",    RGBA(255, 205, 86, 1),   // soft yellow
+                                                    RGBA(200, 200, 200, 1)
+                                                )
+                                            )
+                                          FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+                                          Height: =Self.Size * 1.8
+                                          OnSelect: =Select(Parent)
+                                          PaddingBottom: =0
+                                          PaddingLeft: =0
+                                          PaddingRight: =0
+                                          PaddingTop: =0
+                                          Size: =12
+                                          Text: |
+                                            =If(
+                                                ThisItem.Status.Value = "Completed",
+                                                ThisItem.Status.Value,
+                                                ThisItem.Severity.Value
+                                            )
+                                          VerticalAlign: =VerticalAlign.Top
+                                          Width: =Title5.Width
+                                          X: =Title5.X
+                                          Y: =Title5.Y + Title5.Height
+                                    - Body2:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0, 0, 0, 1)
+                                          FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+                                          Height: =Self.Size * 1.8
+                                          OnSelect: =Select(Parent)
+                                          PaddingBottom: =0
+                                          PaddingLeft: =0
+                                          PaddingRight: =0
+                                          PaddingTop: =0
+                                          Size: =12
+                                          Text: =ThisItem.Location
+                                          VerticalAlign: =VerticalAlign.Top
+                                          Width: =Subtitle3.Width
+                                          X: =Title5.X
+                                          Y: =Subtitle3.Y + Subtitle3.Height
+                                    - NextArrow2:
+                                        Control: Classic/Icon@2.5.0
+                                        Properties:
+                                          AccessibleLabel: =Self.Tooltip
+                                          Color: =RGBA(166, 166, 166, 1)
+                                          DisplayMode: |-
+                                            =
+                                            If(
+                                                ThisItem.Status.Value = "Completed",
+                                                DisplayMode.Disabled,
+                                                DisplayMode.Edit
+                                            )
+                                          Height: =50
+                                          Icon: =Icon.ChevronRight
+                                          OnSelect: |-
+                                            =
+                                            Set(
+                                                selectedEmergency,
+                                                ThisItem
+                                            );
+                                            Navigate(EmergencyOverview);
+                                          PaddingBottom: =16
+                                          PaddingLeft: =16
+                                          PaddingRight: =16
+                                          PaddingTop: =16
+                                          Tooltip: ="View item details"
+                                          Width: =50
+                                          X: =Parent.TemplateWidth - Self.Width - 12
+                                          Y: =(Parent.TemplateHeight / 2) - (Self.Height / 2)
+                                    - Separator4:
+                                        Control: Rectangle@2.3.0
+                                        Properties:
+                                          Fill: =RGBA(255, 255, 255, 1)
+                                          Height: =8
+                                          OnSelect: =Select(Parent)
+                                          Width: =Parent.TemplateWidth
+                                          Y: =Parent.TemplateHeight - Self.Height
+                                    - Rectangle3:
+                                        Control: Rectangle@2.3.0
+                                        Properties:
+                                          Fill: =App.Theme.Colors.Darker30
+                                          Height: =Parent.TemplateHeight - Separator4.Height
+                                          OnSelect: =Select(Parent)
+                                          Visible: =ThisItem.IsSelected
+                                          Width: =4
+                        - HazardAlerts:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =5
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                              LayoutOverflowY: =LayoutOverflow.Scroll
+                              PaddingBottom: =8
+                              PaddingLeft: =15
+                              PaddingRight: =8
+                              PaddingTop: =8
+                            Children:
+                              - Text1:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    FontWeight: =FontWeight.Bold
+                                    Height: =60
+                                    Size: =30
+                                    Text: ="Recent Hazard Reports"
+                                    Width: =Parent.Width
+                                    X: =40
+                                    Y: =10
+                              - Gallery2:
+                                  Control: Gallery@2.15.0
+                                  Variant: BrowseLayout_Vertical_ThreeTextOneImageVariant_ver5.0
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.SetByContainer
+                                    Height: =Parent.Height
+                                    Items: |
+                                      =Sort(
+                                          Hazards,
+                                          ID,
+                                          SortOrder.Descending
+                                      )
+                                  Children:
+                                    - Image12:
+                                        Control: Image@2.2.3
+                                        Properties:
+                                          Height: =84
+                                          Image: |
+                                            =If(
+                                                !IsBlank(ThisItem.Image),
+                                                ThisItem.Image,
+                                                SampleImage
+                                            )
+                                          OnSelect: =Select(Parent)
+                                          RadiusBottomLeft: =8
+                                          RadiusBottomRight: =8
+                                          RadiusTopLeft: =8
+                                          RadiusTopRight: =8
+                                          Width: =84
+                                          X: =16
+                                          Y: =(Parent.TemplateHeight / 2) - (Self.Height / 2)
+                                    - Title8:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0, 0, 0, 1)
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          FontWeight: =If(ThisItem.IsSelected, FontWeight.Bold, FontWeight.Bold)
+                                          Height: =Self.Size * 1.8
+                                          OnSelect: =Select(Parent)
+                                          PaddingBottom: =0
+                                          PaddingLeft: =0
+                                          PaddingRight: =0
+                                          PaddingTop: =0
+                                          Size: =16
+                                          Text: =ThisItem.Title & " (" & ThisItem.HazardType.Value & ")"
+                                          VerticalAlign: =VerticalAlign.Top
+                                          Width: =Parent.TemplateWidth - 185
+                                          X: =115
+                                          Y: =(Parent.TemplateHeight - (Self.Size*1.8 + Subtitle6.Size*1.8 + 2 + Body4.Size*1.8)) / 2
+                                    - Subtitle6:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0, 0, 0, 1)
+                                          Fill: |-
+                                            =
+                                            Switch(
+                                                ThisItem.Severity.Value,
+                                                "High",   RGBA(236, 100, 75, 1),   // soft red
+                                                "Medium", RGBA(255, 159, 64, 1),   // soft orange
+                                                "Low",    RGBA(255, 205, 86, 1),   // soft yellow
+                                                RGBA(200, 200, 200, 1)             // fallback
+                                            )
+                                          FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+                                          Height: =Self.Size * 1.8
+                                          OnSelect: =Select(Parent)
+                                          PaddingBottom: =0
+                                          PaddingLeft: =0
+                                          PaddingRight: =0
+                                          PaddingTop: =0
+                                          Size: =12
+                                          Text: =ThisItem.Severity.Value
+                                          VerticalAlign: =VerticalAlign.Top
+                                          Width: =Title8.Width
+                                          X: =Title8.X
+                                          Y: =Title8.Y + Title8.Height
+                                    - Body4:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0, 0, 0, 1)
+                                          FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+                                          Height: =Self.Size * 1.8
+                                          OnSelect: =Select(Parent)
+                                          PaddingBottom: =0
+                                          PaddingLeft: =0
+                                          PaddingRight: =0
+                                          PaddingTop: =0
+                                          Size: =12
+                                          Text: =ThisItem.Location & " (" & ThisItem.Description & ")"
+                                          VerticalAlign: =VerticalAlign.Top
+                                          Width: =Subtitle6.Width
+                                          X: =Title8.X
+                                          Y: =Subtitle6.Y + Subtitle6.Height
+                                    - Separator8:
+                                        Control: Rectangle@2.3.0
+                                        Properties:
+                                          Fill: =RGBA(255, 255, 255, 1)
+                                          Height: =8
+                                          OnSelect: =Select(Parent)
+                                          Width: =Parent.TemplateWidth
+                                          Y: =Parent.TemplateHeight - Self.Height
+                                    - Rectangle6:
+                                        Control: Rectangle@2.3.0
+                                        Properties:
+                                          Fill: =App.Theme.Colors.Darker30
+                                          Height: =Parent.TemplateHeight - Separator8.Height
+                                          OnSelect: =Select(Parent)
+                                          Visible: =ThisItem.IsSelected
+                                          Width: =4

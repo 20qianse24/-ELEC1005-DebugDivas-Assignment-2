@@ -1,0 +1,390 @@
+# ************************************************************************************************
+# Warning: YAML source code for Canvas Apps should only be used to review changes made within Power Apps Studio and for minor edits (Preview).
+# Use the maker portal to create and edit your Power Apps.
+# 
+# The schema file for Canvas Apps is available at https://go.microsoft.com/fwlink/?linkid=2304907
+# 
+# For more information, visit https://go.microsoft.com/fwlink/?linkid=2292623
+# ************************************************************************************************
+Screens:
+  GroupChat:
+    Children:
+      - Grid2:
+          Control: GroupContainer@1.5.0
+          Variant: GridLayout
+          Properties:
+            Fill: =RGBA(245, 245, 245, 1)
+            Height: =768
+            LayoutGap: =16
+            LayoutGridColumns: =10
+            LayoutGridRows: =8
+            PaddingBottom: =16
+            PaddingLeft: =16
+            PaddingRight: =16
+            PaddingTop: =16
+            Width: =Parent.Width
+            X: =
+          Children:
+            - ChatLog:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  Fill: =RGBA(255, 255, 255, 1)
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGridColumnEnd: =8
+                  LayoutGridColumnStart: =2
+                  LayoutGridRowEnd: =8
+                  LayoutGridRowStart: =3
+                  PaddingBottom: =8
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  PaddingTop: =8
+                  X: =40
+                  Y: =40
+                Children:
+                  - Gallery4:
+                      Control: Gallery@2.15.0
+                      Variant: VariableHeight
+                      Properties:
+                        Height: =ChatLog.Height - 90
+                        Items: =Filter('SES Chat', 'Chat Status'.Value = "Active")
+                        Width: =Parent.Width
+                        X: =
+                        Y: =ChatLog.Y + ChatLog.Height
+                      Children:
+                        - LabelChatMessage:
+                            Control: Label@2.5.1
+                            Properties:
+                              AutoHeight: =true
+                              Color: =RGBA(15,23,42,1)
+                              Fill: |-
+                                =If(
+                                    LookUp(Users, ID = currentUserID).FirstName = ThisItem.Name,Color.AntiqueWhite, Color.Orange)
+                              OnSelect: =Select(Parent)
+                              PaddingBottom: =8
+                              PaddingLeft: =12
+                              PaddingRight: =12
+                              PaddingTop: =8
+                              Size: =15
+                              Text: =ThisItem.'Chat Message'
+                              Width: =Parent.TemplateWidth * 0.65
+                              X: |-
+                                =
+                                If(
+                                    LookUp(Users, ID = currentUserID).FirstName = ThisItem.Name,
+                                    Parent.Width * 0.55,
+                                    Parent.Width * 0.01
+                                )
+                              Y: =16
+                        - LabelChatMessageCreatedBy:
+                            Control: Label@2.5.1
+                            Properties:
+                              Color: =RGBA(120,120,120,1)
+                              Fill: =RGBA(100, 1, 1, 0)
+                              Height: =36
+                              OnSelect: =Select(Parent)
+                              Text: |-
+                                =
+                                Text(ThisItem.Created, "dd/mm/yyyy hh:mm") & 
+                                " by " & 
+                                ThisItem.Name
+                              Width: =499
+                              X: |
+                                =
+                                If(
+                                    LookUp(Users, ID = currentUserID).FirstName = ThisItem.Name,
+                                    Parent.Width * 0.55,
+                                    Parent.Width * 0.01
+                                )
+                              Y: |
+                                =LabelChatMessage.Y + LabelChatMessage.Height
+                        - Icon1:
+                            Control: Classic/Icon@2.5.0
+                            Properties:
+                              Height: =30
+                              Icon: =Icon.Trash
+                              OnSelect: |-
+                                =Patch(
+                                    'SES Chat',
+                                    ThisItem, 
+                                    {
+                                        'Chat Status': {Value: "Deleted"}
+                                    }
+                                )
+                              Visible: |-
+                                =
+                                LookUp(Users, ID = currentUserID).FirstName = ThisItem.Name
+                              Width: =30
+                              X: |
+                                =
+                                If(
+                                    LookUp(Users, ID = currentUserID).FirstName = ThisItem.Name,
+                                    Parent.Width * 0.95,
+                                    Parent.Width * 0.01 +510
+                                )
+                              Y: =27
+                  - InputChatMessage:
+                      Control: Classic/TextInput@2.3.2
+                      Properties:
+                        Default: ="Message"
+                        Fill: =Color.AliceBlue
+                        Height: =50
+                        Mode: =TextMode.MultiLine
+                        RadiusBottomLeft: =12
+                        RadiusBottomRight: =12
+                        RadiusTopLeft: =12
+                        RadiusTopRight: =12
+                        Width: =Parent.Width - 40
+                        X: =40
+                        Y: =Gallery4.Y + Gallery4.Height+10
+                  - ButtonSubmitMessage:
+                      Control: ModernButton@1.0.0
+                      Properties:
+                        AlignInContainer: =AlignInContainer.End
+                        Height: =30
+                        OnSelect: |-
+                          =Patch(
+                              'SES Chat', 
+                              Defaults('SES Chat'), 
+                              {
+
+                                  Title: LookUp(Users, ID = currentUserID).Name,
+                                  'Chat Message': InputChatMessage.Text, 
+                                  'Chat Status': {Value: "Active"}
+                              }
+
+                          );
+                          Reset(InputChatMessage);
+                          Notify("Message has been recorded")
+                        PaddingRight: =0
+                        Text: ="Submit"
+                        Width: =100
+                        X: =40
+                        Y: =70
+            - MainContainer1:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  Fill: =RGBA(255, 255, 255, 1)
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGridColumnEnd: =10
+                  LayoutGridColumnStart: =8
+                  LayoutGridRowEnd: =6
+                  LayoutGridRowStart: =3
+                  LayoutOverflowY: =LayoutOverflow.Scroll
+                  PaddingBottom: =8
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  PaddingTop: =8
+                  X: =40
+                  Y: =40
+                Children:
+                  - Text14:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Align: =Align.Center
+                        AutoHeight: =true
+                        Font: =Font.'Lato Black'
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        Size: =20
+                        Text: ="Chat Members"
+                        Width: =Parent.Width
+                  - Gallery3:
+                      Control: Gallery@2.15.0
+                      Variant: Vertical
+                      Properties:
+                        Height: =Parent.Height
+                        Items: =Users
+                        TemplateSize: =124
+                        Width: =Parent.Width
+                        X: =40
+                        Y: =40
+                      Children:
+                        - hours:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Font: =Font.'Lato Black'
+                              OnSelect: =Select(Parent)
+                              Text: |
+                                =If(
+                                    LookUp(Users, ID = currentUserID).UserType.Value = "Duty Officer",
+                                    "Hours Worked: " & Text(ThisItem.HoursWorked, "0.0")
+                                )
+                              Width: =168
+                              Y: =71
+                        - Text11:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: |-
+                                =
+                                Switch(
+                                    ThisItem.UserType.Value,
+                                    "Duty Officer",   RGBA(179, 199, 57, 1),  
+                                    "Volunteer",    RGBA(255, 165, 0, 1),   // soft yellow
+                                    RGBA(200, 200, 200, 1)             // fallback
+                                )
+                              Font: =Font.'Lato Black'
+                              Height: =30
+                              OnSelect: =Select(Parent)
+                              Text: =ThisItem.UserType.Value
+                              Width: =123
+                              Y: =40
+                        - name:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Font: =Font.'Lato Black'
+                              OnSelect: =Select(Parent)
+                              Size: =20
+                              Text: |-
+                                =
+                                Concatenate(
+                                    Text(ThisItem.FirstName),
+                                    " ",ThisItem.LastName
+                                )
+                              Width: =122
+                              Y: =2
+            - Card1:
+                Control: ModernCard@1.0.0
+                Properties:
+                  Description: ="This channel is for emergency coordination only. For life-threatening emergencies, call 000."
+                  DisplayMode: |
+                    =DisplayMode.Edit
+                  Image: =ses
+                  ImagePosition: =ImagePosition.Center
+                  LayoutGridColumnEnd: =10
+                  LayoutGridColumnStart: =8
+                  LayoutGridRowEnd: =8
+                  LayoutGridRowStart: =6
+                  Subtitle: =
+                  Title: ="Emergency Protocol"
+                  X: =40
+                  Y: =40
+      - HeaderContainer4_2:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =75
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutDirection: =LayoutDirection.Horizontal
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Width: =Parent.Width
+          Children:
+            - NavBar_5:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  Fill: =RGBA(15, 108, 189, 1)
+                  Height: =Parent.Height
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutGap: =15
+                  LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                  LayoutMinHeight: =Parent.LayoutMinHeight
+                  PaddingBottom: =8
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  PaddingTop: =8
+                  Width: =Parent.Width
+                  X: =32
+                  Y: =36
+                Children:
+                  - Image1_9:
+                      Control: Image@2.2.3
+                      Properties:
+                        Image: =ses
+                        OnSelect: =Navigate(VolunteerDashboard)
+                        Width: =200
+                        X: =40
+                        Y: =40
+                  - NavBarOptions_5:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        Height: =Parent.Height
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutJustifyContent: =LayoutJustifyContent.End
+                        LayoutMinHeight: =Parent.LayoutMinHeight
+                        PaddingBottom: =8
+                        PaddingLeft: =8
+                        PaddingRight: =8
+                        PaddingTop: =8
+                        Width: =Parent.Width*(3/4)
+                      Children:
+                        - Button3_6:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Height: =Parent.Height-20
+                              OnSelect: =Navigate(VolunteerDashboard)
+                              Text: ="Dashboard"
+                              Width: |
+                                =140
+                        - Button4_5:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Height: =Parent.Height-20
+                              OnSelect: =Navigate(HazardReport)
+                              Text: ="Report Hazard"
+                              Width: =140
+                              X: =40
+                              Y: =40
+                        - ButtonGroupChat:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Height: =Parent.Height-20
+                              OnSelect: =Navigate(GroupChat)
+                              Text: ="Group Chat"
+                              Visible: |-
+                                =
+                                !IsEmpty(
+                                    Filter(
+                                        AssignedUsers,
+                                        UserId = currentUserID &&
+                                        AUStatus.Value = "Accepted"
+                                    )
+                                )
+                              Width: |
+                                =140
+                              X: =40
+                              Y: =40
+                        - ButtonReportEmergency_5:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                              OnSelect: =Navigate(EmergencyReport)
+                              Text: ="Report Emergency"
+                              Visible: |-
+                                =
+                                LookUp(Users, ID = currentUserID).UserType.Value = "Duty Officer"
+                              Width: =150
+                        - Button6_5:
+                            Control: ModernButton@1.0.0
+                            Properties:
+                              Height: |
+                                =Parent.Height-20
+                              OnSelect: |-
+                                =
+                                Set(currentUserID, Blank());
+
+                                Navigate(LoginScreen);
+
+                                Notify(
+                                    "You have been logged out.",
+                                    NotificationType.Information
+                                );
+                              Text: ="Log Out"
+                              Width: =140
+                              X: =40
+                              Y: =40
