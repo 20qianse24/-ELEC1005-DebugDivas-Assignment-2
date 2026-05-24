@@ -2,10 +2,10 @@
 Assignment 2 ELEC1005
 
 # Project Overview:
-Unified Communications and team management platform for the NSW State Emergency Service to organise spntaneous volunteer allocation to unexpected emergencies.
+This project is an implemented Unified Communications and team management platform for the NSW State Emergency Service to organise spntaneous volunteer allocation to unexpected emergencies, using MicrosoftPowerApps.
 
 # Targeted Problem:
-Current primary communication channels with volunteer rescuers are scattered across social media platforms, resulting in unreliable response times and coordination of volunteers and resources. A unified platform keeps all communications and information on emergencies and hazards in one central location and easily accessible.
+Current primary communication channels with volunteer rescuers are scattered across social media platforms, resulting in unreliable response times and coordination of volunteers and resources. A unified platform keeps all communications and information on emergencies and hazards in one central location and easily accessible for high pressure situations.
 
 # Users:
 Made for Volunteers and Duty Officers involved in responding to unexpected emergencies
