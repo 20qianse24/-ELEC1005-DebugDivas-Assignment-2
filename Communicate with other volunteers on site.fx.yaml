@@ -1,0 +1,66 @@
+testSuite:
+  testSuiteName: Communicate with other volunteers on site
+  testSuiteDescription: Volunteer and Duty Officer workflow (This workflow has no edge or invalid cases)
+  persona: User1
+  appLogicalName: ''
+  appId: 930d7f64-ed9f-44c6-b1cc-e27b9574e2a4
+  onTestCaseStart: |
+    = 
+    // Set all user assignments to pending for testing
+    UpdateIf(
+        AssignedUsers,
+        true,
+        {
+            AUStatus: { Value: "Pending" }
+        }
+    );
+    ;
+  onTestCaseComplete: ""
+  onTestSuiteComplete: ""
+  networkRequestMocks: 
+  testCases:
+  - testCaseName: Expected Case
+    testCaseDescription: Test case begins right after user has accepted an emergency assignment
+    testSteps: |
+      = 
+      Navigate(VolunteerDashboard);
+      Set(currentUserID, 3);
+      Assert(
+          ButtonGroupChat_4.Visible = false,
+          "Group chat button should not be visible when user has no accepted emergencies"
+      );
+      Set(
+          selectedEmergency,
+          LookUp(Gallery1.AllItems, ID = 4)
+      );
+      Navigate(EmergencyOverview);
+      Select(Timer1);
+      Assert(
+          ButtonGroupChat_4.Visible = true,
+          "Group chat button should be visible after accepting an assignment"
+      );
+      Select(ButtonGroupChat_4);
+      Select(ButtonSubmitMessage);
+      Assert(
+          CountRows('SES Chat') > 0,
+          "No chat messages were created—message not saved"
+      );
+      ;
+testSettings:
+  filePath: 
+  browserConfigurations:
+  - browser: Chromium
+    device: 
+    screenWidth: 0
+    screenHeight: 0
+  locale: en-GB
+  recordVideo: true
+  headless: true
+  enablePowerFxOverlay: false
+  timeout: 30000
+environmentVariables:
+  filePath: 
+  users:
+  - personaName: User1
+    emailKey: user1Email
+    passwordKey: user1Password

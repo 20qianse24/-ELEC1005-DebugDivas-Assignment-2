@@ -1,0 +1,79 @@
+testSuite:
+  testSuiteName: Receive new hazard alerts
+  testSuiteDescription: Volunteer and Duty Officer workflow (This has no edge or invalid cases)
+  persona: User1
+  appLogicalName: ''
+  appId: 930d7f64-ed9f-44c6-b1cc-e27b9574e2a4
+  onTestCaseStart: |
+    = 
+    // Set all user assignments to pending for testing
+    UpdateIf(
+        AssignedUsers,
+        true,
+        {
+            AUStatus: { Value: "Pending" }
+        }
+    );
+    ;
+  onTestCaseComplete: ""
+  onTestSuiteComplete: ""
+  networkRequestMocks: 
+  testCases:
+  - testCaseName: Expected Case
+    testCaseDescription: New reported hazards will appear on the dashbaord with all relevant information displayed at a glance
+    testSteps: |
+      = 
+      Navigate(VolunteerDashboard);
+      Set(currentUserID, 1);
+
+      Set(
+          currentUser,
+          First(Filter(Users, ID = currentUserID))
+      );
+
+      Set(
+          newHazard,
+          Patch(
+              Hazards,
+              Defaults(Hazards),
+              {
+                  Title: "Test Hazard",
+                  Description: "Test description",
+                  Severity: { Value: "Low" },
+                  HazardType: { Value: "Fire" }
+              }
+          )
+      );
+
+      Assert(
+          !IsBlank(
+              LookUp(
+                  Gallery2.AllItems,
+                  ID = newHazard.ID
+              )
+          ),
+          "New hazard not displayed on dashboard"
+      );
+
+      Assert(!IsBlank(LookUp(Gallery1.AllItems, ID = newHazard.ID).Title));
+      Assert(!IsBlank(LookUp(Gallery1.AllItems, ID = newHazard.ID).Severity.Value));
+      Assert(!IsBlank(LookUp(Gallery1.AllItems, ID = newHazard.ID).Location));
+      Assert(!IsBlank(LookUp(Gallery1.AllItems, ID = newHazard.ID).Description));
+testSettings:
+  filePath: 
+  browserConfigurations:
+  - browser: Chromium
+    device: 
+    screenWidth: 0
+    screenHeight: 0
+  locale: en-GB
+  recordVideo: true
+  headless: true
+  enablePowerFxOverlay: false
+  timeout: 30000
+environmentVariables:
+  filePath: 
+  users:
+  - personaName: User1
+    emailKey: user1Email
+    passwordKey: user1Password

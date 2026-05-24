@@ -1,0 +1,158 @@
+testSuite:
+  testSuiteName: Receive and Accept Emergency Assignment
+  testSuiteDescription: Duty Officer and Volunteer workflow (No invalid cases)
+  persona: User1
+  appLogicalName: ''
+  appId: 930d7f64-ed9f-44c6-b1cc-e27b9574e2a4
+  onTestCaseStart: |
+    = 
+    // Set all user assignments to pending for testing
+    UpdateIf(
+        AssignedUsers,
+        true,
+        {
+            AUStatus: { Value: "Pending" }
+        }
+    );
+    ;
+  onTestCaseComplete: ""
+  onTestSuiteComplete: ""
+  networkRequestMocks: 
+  testCases:
+  - testCaseName: Expected Case - Accept Assignment
+    testCaseDescription: Accept assignment and end shift to update hours
+    testSteps: |
+      = 
+      Navigate(VolunteerDashboard);
+      Set(currentUserID, 2);
+      Set(
+          selectedEmergency,
+          LookUp(Gallery1.AllItems, ID = 1)
+      );
+      Navigate(EmergencyOverview);
+
+      Assert(
+          !IsBlank(Label4_1.Text),
+          "Emergency title is not visible"
+      );
+      Set(
+          initialHours,
+          LookUp(Users, ID = currentUserID).HoursWorked
+      );
+      Select(Timer1);
+
+      Assert(
+          LookUp(
+              AssignedUsers,
+              UserId = currentUserID &&
+              EmergencyId = selectedEmergency.ID
+          ).AUStatus.Value = "Accepted",
+          "Status was not updated to Accepted"
+      );
+      Select(Timer1);
+
+      Assert(
+          LookUp(Users, ID = currentUserID).HoursWorked > initialHours,
+          "Worked hours were not updated"
+      );
+  - testCaseName: Edge Case - Decline assignment after accepting
+    testCaseDescription: Volunter/Duty Officer workflow
+    testSteps: |
+      = 
+      Navigate(VolunteerDashboard);
+      Set(currentUserID, 2);
+      Set(
+          selectedEmergency,
+          LookUp(Gallery1.AllItems, ID = 1)
+      );
+      Navigate(EmergencyOverview);
+      Select(Timer1);
+      Select(Button3);
+
+      Assert(
+          LookUp(
+              AssignedUsers,
+              UserId = currentUserID &&
+              EmergencyId = selectedEmergency.ID
+          ).AUStatus.Value = "Declined",
+          "Status was not updated to Declined"
+      );
+
+      Assert(
+          IsEmpty(
+              Filter(
+                  Gallery1.AllItems,
+                  ID = selectedEmergency.ID
+              )
+          ),
+          "Declined assignment still visible"
+      );
+      ;
+  - testCaseName: Expected Case - Receiving relevant assigments (based on relative qualifications)
+    testCaseDescription: 'User only receives pending assignment on dahsboard if they hold at least 1 required qualification (Note: cannot allocate based on location due to platform limitations)'
+    testSteps: |
+      = 
+      Navigate(VolunteerDashboard);
+      Set(currentUserID, 3);
+      Set(
+          newEmergency,
+          Patch(
+              Emergencies,
+              Defaults(Emergencies),
+              {
+                  Title: "Test Emergency Skill 2",
+                  Description: "Testing qualification matching",
+                  Severity: { Value: "Medium" },
+                  EmergencyType: { Value: "Fire" },
+                  Time: Now()
+              }
+          )
+      );
+
+      Assert(
+          IsBlank(
+              LookUp(
+                  Gallery1.AllItems,
+                  ID = newEmergency.ID
+              )
+          ),
+          "New emergency should not be displayed on dashboard for user without required qualification"
+      );
+      With(
+          {
+              userQuals: Filter(UserQualifications, UserId = currentUserID).QualificationId
+          },
+          Assert(
+              CountRows(
+                  Filter(
+                      Gallery1.AllItems As g,
+                      IsEmpty(
+                          Filter(
+                              EmergencySkills,
+                              EmergencyId = g.ID &&
+                              QualificationId in userQuals
+                          )
+                      )
+                  )
+              ) = 0,
+              "Some emergencies do not have at least one matching qualification"
+          )
+      );
+testSettings:
+  filePath: 
+  browserConfigurations:
+  - browser: Chromium
+    device: 
+    screenWidth: 0
+    screenHeight: 0
+  locale: en-GB
+  recordVideo: true
+  headless: true
+  enablePowerFxOverlay: false
+  timeout: 30000
+environmentVariables:
+  filePath: 
+  users:
+  - personaName: User1
+    emailKey: user1Email
+    passwordKey: user1Password
